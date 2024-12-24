@@ -1,5 +1,9 @@
 local player = game.Players.LocalPlayer
 local chatService = game:GetService("Chat")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- RemoteEvent para comunicar com o servidor
+local sendChatMessageEvent = replicatedStorage:WaitForChild("SendChatMessage")
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = player:WaitForChild("PlayerGui")
@@ -31,7 +35,8 @@ poweredByLabel.Parent = mainFrame
 local recruiting = false
 
 local function sendChatMessage(message)
-    chatService:Chat(player.Character, message, Enum.ChatColor.Blue)
+    -- Envia a mensagem para o servidor para ser processada e enviada ao chat
+    sendChatMessageEvent:FireServer(message)
 end
 
 local function startRecruitment()
